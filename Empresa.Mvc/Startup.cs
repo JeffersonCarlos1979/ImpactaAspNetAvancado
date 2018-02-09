@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Empresa.Repositorios.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Empresa.Mvc
 {
@@ -45,7 +46,7 @@ namespace Empresa.Mvc
 
         private void SetConnectionString(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(Configuration.GetConnectionString("EmpresaConnectionString"));    
+            options.UseSqlServer(Configuration.GetConnectionString("EmpresaConnectionString"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +64,17 @@ namespace Empresa.Mvc
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = Configuration.GetSection("TipoAutenticacao").Value,
+                LoginPath = new PathString("/Login/Index"),
+                AccessDeniedPath = new PathString("/Login/AcessoNegado"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                ExpireTimeSpan = TimeSpan.FromMinutes(5)
+            });
+
 
             app.UseStaticFiles();
 

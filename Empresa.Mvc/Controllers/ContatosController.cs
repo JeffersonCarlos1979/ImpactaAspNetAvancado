@@ -7,6 +7,7 @@ using Empresa.Repositorios.SqlServer;
 using Empresa.Dominio;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,11 +36,13 @@ namespace Empresa.Mvc.Controllers
         }
 
 
+        [Authorize(Roles = "Admin, Corretor")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin, Corretor")]
         [HttpPost]
         public IActionResult Create(Contato contato)
         {
