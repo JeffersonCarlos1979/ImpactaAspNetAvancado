@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Empresa.Mvc.ViewModels;
 using Empresa.Repositorios.SqlServer;
-using Empresa.Dominio;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 
@@ -12,42 +12,41 @@ using Microsoft.Extensions.Configuration;
 
 namespace Empresa.Mvc.Controllers
 {
-    public class ContatosController : Controller
+    public class LoginController : Controller
     {
+
         private EmrpesaDbContext _db;// = new EmrpesaDbContext();
         private IDataProtector _protectorProvider;
 
-        //Nesse construtor entra o conceito de injeção de dependência
-        public ContatosController(EmrpesaDbContext db, IDataProtectionProvider 
+        public LoginController(EmrpesaDbContext db, IDataProtectionProvider
             protectionProvider, IConfiguration configuracao)
         {
             _db = db;
             _protectorProvider = protectionProvider.CreateProtector(
                 configuracao.GetSection("ChaveCriptografia").Value);
-
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-
-            return View(_db.Contatos.OrderBy(c=> c.Nome).ToList());
-        }
-
-
-        public IActionResult Create()
-        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Contato contato)
+        public IActionResult Index(LoginViewModel viewModel)
         {
-            contato.Senha = _protectorProvider.Protect(contato.Senha);
-            _db.Contatos.Add(contato);
-            _db.SaveChanges();
+            //viewModel.Senha= _protectorProvider.Protect(viewModel.Senha);
+            var contato = _db.Contatos.Where(c => c.Email == viewModel.Email &&
+            _protectorProvider.Unprotect(c.Senha) == viewModel.Senha).SingleOrDefault();
 
-            return RedirectToAction("Index");
+            if (contato==null)
+            {
+                ModelState.AddModelError("", "Usuário ou senha incorretos");
+                return View(viewModel);
+            }
+
+            return RedirectToAction("Index","Home");
         }
+
     }
 }

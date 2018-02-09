@@ -7,13 +7,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Empresa.Repositorios.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Empresa.Mvc
 {
     public class Startup
     {
+
+
         public Startup(IHostingEnvironment env)
         {
+
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -29,6 +35,17 @@ namespace Empresa.Mvc
         {
             // Add framework services.
             services.AddMvc();
+            //services.AddDbContext<EmrpesaDbContext>(
+            //    options => options.UseSqlServer(Configuration.GetConnectionString("EmpresaConnectionString")));
+
+            //O lambda expression de cima equivale a isso:
+            services.AddDbContext<EmrpesaDbContext>(SetConnectionString);
+            services.AddSingleton<IConfiguration>(Configuration);
+        }
+
+        private void SetConnectionString(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(Configuration.GetConnectionString("EmpresaConnectionString"));    
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
