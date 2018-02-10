@@ -46,6 +46,13 @@ namespace Empresa.Mvc.Controllers
         [HttpPost]
         public IActionResult Create(Contato contato)
         {
+            var podeCriar = User.HasClaim("Contato","Criar");
+
+            if (podeCriar)
+            {
+                return RedirectToAction("Acesso negado", "Login");
+            }
+
             contato.Senha = _protectorProvider.Protect(contato.Senha);
             _db.Contatos.Add(contato);
             _db.SaveChanges();
