@@ -10,5 +10,7 @@
         public decimal Preco { get; set; }
         public int Estoque { get; set; }
         public bool Ativo { get; set; }
+        public bool Emleilao { get; set; }
+
     }
 }
