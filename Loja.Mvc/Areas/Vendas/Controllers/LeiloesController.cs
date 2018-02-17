@@ -15,7 +15,12 @@ namespace Loja.Mvc.Areas.Vendas.Controllers
         // GET: Vendas/Leiloes
         public ActionResult Index()
         {
-            return View(Mapeamento.Mapear(_db.Produtos.Where(p => p.Emleilao).ToList()));
+            return View(Mapeamento.Mapear(_db.Produtos.Where(p => p.EmLeilao).ToList()));
+        }
+
+        public ActionResult Details(int id)
+        {
+            return View(Mapeamento.Mapear(_db.Produtos.Find(id)));
         }
     }
 }

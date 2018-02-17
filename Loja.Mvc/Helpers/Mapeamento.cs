@@ -44,7 +44,7 @@ namespace Loja.Mvc.Helpers
             produto.Estoque = viewModel.Estoque.Value;
             produto.Nome = viewModel.Nome;
             produto.Preco = viewModel.Preco.Value;
-            produto.Emleilao = viewModel.EmLeilao;
+            produto.EmLeilao = viewModel.EmLeilao;
 
             return produto;
         }
@@ -68,7 +68,7 @@ namespace Loja.Mvc.Helpers
             viewModel.Id = produto.Id;
             viewModel.Nome = produto.Nome;
             viewModel.Preco = produto.Preco;
-            viewModel.EmLeilao = produto.Emleilao;
+            viewModel.EmLeilao = produto.EmLeilao;
             return viewModel;
         }
 

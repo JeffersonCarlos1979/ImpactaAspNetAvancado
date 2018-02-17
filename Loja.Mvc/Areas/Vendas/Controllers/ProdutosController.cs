@@ -7,11 +7,15 @@ using Loja.Repositorios.SqlServer.EF;
 using Loja.Mvc.Helpers;
 using Loja.Mvc.Areas.Vendas.Models;
 using System;
+using Loja.Mvc.Hubs;
+using Microsoft.AspNet.SignalR;
 
 namespace Loja.Mvc.Areas.Vendas.Controllers
 {
     public class ProdutosController : Controller
     {
+        private IHubContext _leilaoHub = GlobalHost.ConnectionManager.GetHubContext<LeilaoHub>(); 
+
         // ToDo: design pattern Unity of Work.
         private LojaDbContext db = new LojaDbContext();
 
@@ -96,6 +100,9 @@ namespace Loja.Mvc.Areas.Vendas.Controllers
                 //produto.Categoria = db.Categorias.Find(viewModel.CategoriaId);
 
                 db.SaveChanges();
+
+                _leilaoHub.Clients.All.atualizarOfertas();
+
                 return RedirectToAction("Index");
             }
             return View(viewModel);

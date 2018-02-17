@@ -1,2 +1,5 @@
 Para fazer o login social, é necessário acessar https://console.developers.google.com, criar um projeto abilitar google+ Api
 Pode dormir tranquilo.
+
+Inletex 172.16.3
+
