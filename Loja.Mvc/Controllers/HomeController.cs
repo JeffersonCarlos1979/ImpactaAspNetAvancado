@@ -20,6 +20,18 @@ namespace Loja.Mvc.Controllers
             return View();
         }
 
+
+        [AllowAnonymous]
+        public ActionResult DefinirLinguagem(string linguagem)
+        {
+            Response.Cookies["LinguagemSelecionada"].Value = linguagem;
+
+            return Redirect(Request.UrlReferrer.ToString());
+
+            /*Para visualizar os cook no navegado, é digitar F12, netwok, selecionar a action (DefinirLinguagem?linguagem=es)
+             E aí dá pra visualizar o cookie*/
+        }
+
         [AuthorizeRole(Perfil.Administrador)]
         public ActionResult About()
         {
@@ -40,5 +52,8 @@ namespace Loja.Mvc.Controllers
 
             return View();
         }
+
+
+        
     }
 }
