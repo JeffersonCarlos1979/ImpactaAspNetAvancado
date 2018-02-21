@@ -173,9 +173,19 @@ namespace Loja.Mvc.Controllers
                 AddErrors(result);
             }
 
+           
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult VerificarDisponibilidadeEmail(string email)
+        {
+            //UserManager.FindByEmail(email) faz uma consulta no banco (!!!)
+            return Json(UserManager.FindByEmail(email));
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

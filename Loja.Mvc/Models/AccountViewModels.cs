@@ -1,8 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
+using System.Web.Mvc;
 
 namespace Loja.Mvc.Models
 {
+    using System;
+    //Esse using precisa ficar dentro do namespace para que ele ganhe prioridade.
+    //Isso resolve conflito de classes com nome igual nos namespaces
+    //System.Web.Mvc
+    using System.ComponentModel.DataAnnotations;
+    using Validacoes;
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -73,9 +81,17 @@ namespace Loja.Mvc.Models
         [Display(Name = "Nome")]
         public string Nome { get; set; }
 
+
+        [Required]
+        [Display(Name = "Nascimento")]
+        [IdadeMinima(18)]
+        public DateTime DataNascimento { get; set; }
+
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
+        //[Remote("VerificarDisponibilidadeEmail","Account",HttpMethod = "POST", ErrorMessage = "Email já utilizado.")]
         public string Email { get; set; }
 
         [Required]
